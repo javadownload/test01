@@ -1,0 +1,404 @@
+월드잡플러스앱관리
+강의시작 , 강의 끝  ==> 비콘체크확인 
+
+
+git 협업시 push 권한
+Git을 이용한 협업 워크플로우   https://lhy.kr/git-workflow
+git / reporsitory / settings / 엑세스관리/ 엑세스관리 / 공동작업자초대
+
+
+git 사용법 진행
+
+협업도 중요하지만  ,  자신의 포트폴리오를 git에 등록 관리하는것도 아주 중요
+
+얼마나 commit을 했는지 이력 관리가 된다.
+
+오픈소스 활동도 하니의 이력이 될수 있다.  ==>  pr   (pull request) 요청 
+
+git 을 사용하지 않으면 source code를 usb에 담아서 ....
+
+git 설치 
+
+
+#################### git 환경설정  git config #######################
+>cd home
+C:\Users\javains\Desktop\명지전문대\git_temp> git 관리할 로컬레포지토리 폴더만든다.
+
+>git config --list
+
+>git config --global user.name "herena68~~~~~"              
+>git config --global user.email "kkjr~~~~~~~@daum.net"
+
+
+>git config --list
+
+ .gitconfig  file
+
+
+################### 주의  ###########################
+git pull 명령은 git fetch 와 git merge 명령을 순서대로 실행하는 것뿐이다.
+>git pull
+>git push
+##################################################
+github에서 repository 하나 만든다. test01 =>   Add a README file , Add .gitignore (java선택) => create
+
+.gitignore file 수정한다.
+
+작업폴더
+C:\Users\javains\Desktop\명지전문대\git_temp>
+
+>git clone https://github.com/herena68/test01.git    ==> main
+
+   src , bin 폴더생성 후 => src/Calc.java   ==>javac -d ../bin *.java ==> bin/Calc.class   파일생성
+
+>git status
+>git add ~~~
+>git status
+>git reset
+>git status
+>git add .
+>git status
+>git commit -m "~~~"
+>git status
+>git push
+리모트확인 
+다시수정
+>git status
+ git add => 수정된 내용 반영
+ git checkout --=> 수정된 내용 무시
+
+>git checkout -- 파일명
+>git status
+다시수정
+>git add .
+>git commit -m "~~~"  => 커밋메세지잘못입력한경우
+
+>git commit --amend   => 커밋메세지 수정 가능    i입력 , 저장 esc => :wq!
+  vi 에디터  
+>git status
+>git push
+리모트확인
+
+####################커밋 내역수정########################
+특정 커밋을 되돌리고 싶은 경우 
+
+
+>git clone https://~~~
+>git pull
+ 파일 수정 
+
+>git add .
+>git status
+>git commit -m "~~~"
+>git status
+>git push
+리모트확인 
+>git log   => log창 빠져나올때 q입력 
+ log창에서 
+ 각각의 commit 에는 해시값이 할당되어 있다.
+
+>git reset --hard 해시값   ==> 이 해시값의 commit 지점으로 돌아간다.
+                             --hard 옵션은 지정지점으로 돌아가면서 모든 정보는 사라진다.
+			     --soft옵션은 정보들을 삭제하지않고 보관한다.
+>git log 
+
+이상태에서는 리모트와 로컬이 내용이 다르므로 push하면 reject 당한다.
+>git push   ==>  reject 당한다.
+>git push -f ==>  강제로 push 
+
+
+ 파일추가
+>git add .
+>git commit -m "~~~"
+>git push
+ 파일수정
+>git commit --amend   => 커밋메세지 수정 가능    i입력 , 저장 esc => :wq!
+>git push -f ==>  강제로 push 
+
+
+
+
+####################git branch#######################
+https://ndb796.tistory.com/190
+
+>git branch   ==> 현재 branch가 몇개 존재하는지 확인   *main
+>git branch  dev  ==> dev branch 생성
+
+>git branch  ==> branch 확인 
+
+>git checkout dev 
+>git branch  ==> branch 확인 
+
+  파일 수정 
+
+>git add .
+>git commit -m "~~~"
+
+>git log
+
+>git checkout main  ==> main 브랜치로 이동
+>git checkout master  ==> master 브랜치로 이동
+
+>git merge dev 
+
+
+>git log
+
+>git push
+
+
+>git branch -d dev  => 병합이 끝난 branch 제거  
+
+>git branch  ==> branch 확인 
+
+####################git branch 에 push  #######################
+
+폴더두개생성 => git clone 두개의 폴더에 한후 각각 branch b1,b2 생성 하면서 작업 여러 상황을 테스트해본다.
+
+
+>git branch   ==> 현재 branch가 몇개 존재하는지 확인   *main
+>git branch  test  ==> test branch 생성
+
+>git branch  ==> branch 확인 
+
+>git checkout test 
+>git branch  ==> branch 확인 
+
+  mkdir test ==> 생성후 test.txt 파일 만들기   utf-8 주의 
+
+>git add .
+>git commit -m "branch test ~~~"
+
+>git log  ==> HEAD가 test
+
+
+>git push  ==> 메세지확인 
+>git push --set-upstream origin test
+ ==> test branch에 push   ,  git hub에서 branch별로 zip파일 다운로드 가능 
+
+
+#main에서 branch 병합  
+>git checkout main 
+>git merge test          //병합하다 에러나면 git pull하고 파일 열어서 수정후 git add => git commit => git push 수동으로한다.
+>git status
+>git push
+
+
+
+####################git branch간 충돌 conflict 해결 #######################
+git clone 두개의 폴더에 한후 각각 branch 생성 하면서 작업 여러 상황을 테스트해본다.
+
+>git branch  ==> branch 확인 
+  main 브랜치만 존재 
+
+>git checkout test 
+>git branch  ==> branch 확인 
+
+  test 브랜치에서 파일 수정  div
+
+>git add .
+>git commit -m "test double~~~"
+
+>git log  ==> HEAD->test 확인가능  checkout된 branch 상태에 따라 log가 달라짐
+
+>git checkout main   ==> test에서 push 안하고  main 브랜치로 이동
+
+   main 브랜치에서 파일 수정  ==> test 와 main이 서로 내용이 다른 상태 
+
+>git add .
+>git commit -m "main ~~~"
+
+>git log  ==> main만 보임  checkout 상태에따라 달라짐
+
+
+>git checkout test 
+>git log  ==> test만  보임 
+
+
+### 각각의 branch에서 >git push 수행
+
+
+이상태에서 병합? main branch 에서 
+>git checkout main   ==> main 브랜치로 이동
+
+
+>git merge test   ==> conflict  / automatic merge failed 
+
+ 파일을 열어 보면 충돌난위치 확인 가능 
+ 수동으로 ==>  파일에서 원하는내용 남기고 지울부분 지운다 다시 저장
+
+>git add .
+>git commit -m "~~~"
+>git merge test
+>git log 
+ merge 가 이루어진것 확인  
+
+>git branch -d test  => 병합이 끝난 branch 제거  
+>git branch  ==> branch 확인 
+ master만 보임
+
+>git push
+
+#################### branch 별로 clone #######################
+
+**** branch 별로 clone 
+>git clone https://github.com/herena68/test01.git
+>git clone -b test https://github.com/herena68/test01.git
+
+**** GitHub 원격 (remote) 브랜치 (branch) 삭제하기 ***
+1) 삭제하려는 브랜치 외의 다른 브랜치로 이동한다.   git checkout master
+2) 로컬 브랜치를 삭제한다.                   git branch -D test
+3) 원격 브랜치를 삭제한다.                   git push origin :test
+
+
+
+>git clone -b test https://github.com/herena68/test01.git
+>git checkout main
+>git branch -D test      ==> 로컬의 test branch 삭제됨
+>git push origin :test   ==> 원격의 test branch 삭제됨 
+
+
+
+####################git에서 pull안하고 push하면 충돌발생  #######################
+
+ github 원격에서 수정후 => local에서 같은 파일 수정  
+>git add .
+>git commit -m "~~~"
+>git push
+ [rejected]
+>git pull
+>git push   ==> merge 되어서 해결됨 
+>git log 
+
+
+github 원격에서 수정후 => local에서 같은 파일 수정  
+>git add .
+>git commit -m "~~~"
+>git push
+ [rejected]
+>git pull   ==> Automatic merge failed; merge시 충돌 발생 될 경우 
+                파일열어서 수동으로 해결 
+
+>git status
+>git add .
+>git commit -m "~~~"
+>git push  
+>git log 
+
+
+####################git에서 원격 저장소 관리 #######################
+
+
+>git remote
+ origin
+>git remote show origin
+
+>git remote add test https://다른 레포지토리지정
+
+>git remote -v  ==> 전체목록 확인 
+
+>git remote rename test temp
+
+>git remote -v  ==> 전체목록 확인 
+
+>git log origin/master
+
+>git remote rm temp  ==> 특정 리모트 삭제 
+>git remote -v  ==> 전체목록 확인 
+
+####################git에서 log 다루기 #######################
+
+>git log
+>git log --stat
+>git log --graph
+>git log -p -3
+>git log --pretty=oneline
+>git log --pretty-format:"%h->%n,%ar:%s" --graph
+
+
+
+
+####################git에서 README.md #######################
+
+https://ndb796.tistory.com/194?category=1029186
+
+#
+##
+###
+
+# Hi! <img src="https://raw.githubusercontent.com/ABSphreak/ABSphreak/master/gifs/Hi.gif" width="30px">
+
+
+소스코드블럭  백틱키사용
+```
+
+
+```
+
+링크 사용
+[블로그주소](url 주소) ==> 공백없이 작성한다.
+
+
+순서없는 목록 *을 이용 들여쓰기
+*
+  *
+  *
+    *
+    *
+    *
+
+테이블만들기
+월 |화|수
+--|--|--
+자바|sql|jsp
+
+
+강조구문 **
+**강조**
+
+
+####################git rebase #######################
+
+>git init
+ 파일생성
+>git add .
+>git commit -m "1~~~"
+ 파일 수정
+>git add .
+>git commit -m "2~~~"
+파일 삭제
+>git add .
+>git commit -m "3~~~"
+다른이름의 파일 생성
+>git add .
+>git commit -m "4~~~"
+
+>git log
+
+>git rebase -i HEAD~3   ==> commit message 수정가능
+
+  원하는위치에서 pick을 reword로 수저후 wq!
+
+>git rebase -i 해시값   ==> commit message 수정가능
+
+>git log
+
+>git rebase -i HEAD~3   ==> commit 명령 삭제   <주의>
+  원하는위치에서 pick을 drop 수저후 wq!
+
+  vi 에디터 
+####################git config #######################
+>cd home
+>git config --list
+
+>git config --global user.name "~~"
+>git config --global user.email "~~"
+
+>git config --list
+
+ .gitconfig  file
+
+
+
+
+
