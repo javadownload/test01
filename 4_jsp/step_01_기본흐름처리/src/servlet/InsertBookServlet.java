@@ -30,11 +30,13 @@ public class InsertBookServlet extends HttpServlet {
 		
 		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
-		BookVO vo =  new BookVO();
-		vo.setPublisher(request.getParameter("publisher"));
-		vo.setPrice(Integer.parseInt(request.getParameter("price")));
-		vo.setTitle(request.getParameter("title"));
+		
 		try {
+			BookVO vo =  new BookVO();
+			vo.setPublisher(request.getParameter("publisher"));
+			vo.setPrice(Integer.parseInt(request.getParameter("price")));
+			vo.setTitle(request.getParameter("title"));
+			
 			service.bookAdd(vo);
 			response.sendRedirect("bookList.do");
 			//out.print("<h1>"+i+"개의 row 입력 완료");

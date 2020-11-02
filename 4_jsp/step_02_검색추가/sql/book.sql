@@ -29,7 +29,24 @@ select * from Book where publisher like '%'||?||'%' " +" order by bookno desc";
 
 commit;
 
+/* user table */
+drop table user;
+create table user(
+	id varchar(10)  primary key,
+	password varchar(10)  not null,
+	name varchar(20),
+	role varchar(10) default 'user' check(role in ('user','admin'))
+);
 
+insert into user (id,password,name,role) values ('admin','1234','관리자','admin');
+insert into user (id,password,name) values ('java01','1234','홍길동');
+
+select * from user;
+delete from user where id = 'java01';
+UPDATE user SET password = '1234'  WHERE id ='java01';
+
+select * from user where id='admin' and password='1234';
+select * from user where id='java01' and password='1234';
 ########################################################
 
 oracle
