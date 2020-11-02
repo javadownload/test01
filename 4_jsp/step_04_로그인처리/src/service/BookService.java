@@ -10,6 +10,7 @@ public interface BookService {
 	 void bookAdd(BookVO vo);
 	 void deleteBook(int bookno);
 	 void updateBook(BookVO vo);
-	 
+	 BookVO getBook(int no) ;
+
 	 List<BookVO> searchBook(String condition,String keyword);
 }

@@ -9,10 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dao.BookDAO;
 import dao.BookDAO_JDBC;
+import dao.BookDAO_Mariadb;
 import service.BookService;
 import service.BookServiceImpl;
 import vo.BookVO;
@@ -28,24 +28,22 @@ public class SearchBookServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
       
 		
-		HttpSession session = request.getSession();
-        String login = (String) session.getAttribute("login");
-        System.out.println("login : "+login);
-		if(login == null) {
-			//response.sendRedirect("login.jsp");
-	         request.setAttribute("msg", "login이 필요합니다.");
-
-			getServletContext().
-			getRequestDispatcher("/login.jsp").
-			forward(request, response);
-			return;
-		}
-		
-		
+//		HttpSession session = request.getSession();
+//        String login = (String) session.getAttribute("login");
+//        System.out.println("login : "+login);
+//		if(login == null) {
+//			//response.sendRedirect("login.jsp");
+//	         request.setAttribute("msg", "login이 필요합니다.");
+//
+//			getServletContext().
+//			getRequestDispatcher("/login.jsp").
+//			forward(request, response);
+//			return;
+//		}
         String condition = request.getParameter("condition");
         String keyword = request.getParameter("keyword");
 		
-		BookDAO dao = new BookDAO_JDBC();
+		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
 		List<BookVO> list = service.searchBook(condition, keyword);
 		

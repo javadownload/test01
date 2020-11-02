@@ -24,26 +24,3 @@ nav ul li a:hover{
 }
 
 
-
-a.btn {
-	display: block;
-	text-align: center;
-	width: 170px;
-	height: 35px;
-	line-height : 35px;
-	
-	border: 1px solid orange;
-	border-radius: 15px;
-	text-decoration: none;
-	background-color: gray;
-	color: black;
-	font-size: 1.1em;
-	font-weight: bold;
-	margin: 0 auto;
-	
-}
-
-a.btn:hover {
-	color: red;
-	text-shadow: 5px 5px 5px white;
-}

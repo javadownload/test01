@@ -62,15 +62,4 @@
        right: 0px;
        top: -20px;
    }
-   .dropbox{
-      position: relative;
-   }
-   .dropmenu{
-      visibility : hidden;
-      position: absolute;
-      top: 30px;
-      left: 0px;
-   }
-   .dropbox:hover > .dropmenu{
-      visibility: visible;
-    }
+   
