@@ -1,3 +1,38 @@
+mariadb
+
+drop table book;
+CREATE TABLE Book (
+  bookno      int(4) PRIMARY KEY auto_increment,
+  title       VARCHAR(40),
+  publisher   VARCHAR(40),
+  price       int(8) 
+);
+
+insert into book (title,publisher,price)
+values ('자바','한빛',900);
+
+insert into book (title,publisher,price) values ('java programming','한빛',900);
+insert into book (title,publisher,price) values ('java ','한빛',900);
+insert into book (title,publisher,price) values ('html5','이지스',900);
+insert into book (title,publisher,price) values ('HTML5 CSS JavaScript','에이콘',900);
+
+select * from book order by bookno desc;
+select * from book order by bookno desc limit 1 , 3;
+
+delete from book where bookno = 1;
+
+select * from Book where title like '%html%' order by bookno desc;
+
+select * from Book where publisher like '%명지%' order by bookno desc;
+
+select * from Book where publisher like '%'||?||'%' " +" order by bookno desc";
+
+commit;
+
+
+########################################################
+
+oracle
 drop table book;
 CREATE TABLE Book (
   bookno      NUMBER(4) PRIMARY KEY,
@@ -47,6 +82,7 @@ select * from ( select rownum row#,bookid, bookname, publisher, price
  					   from (select * from Book order by bookid desc)  
  					    ) where row# between 1 and 5 ;
  					    
+select * from book order by bookno desc limit 1 , 5;
  					    
 
  /* user table */
@@ -124,34 +160,34 @@ CREATE TABLE Orders (
   orderdate DATE
 );
 -- Book, Customer, Orders 데이터 생성
-INSERT INTO Book VALUES(1, '축구의 역사', '굿스포츠', 7000);
-INSERT INTO Book VALUES(2, '축구아는 여자', '나무수', 13000);
+INSERT INTO Book VALUES(1, '축구의 역사', '굿스포츠', 7300);
+INSERT INTO Book VALUES(2, '축구아는 사람', '나무수', 13000);
 INSERT INTO Book VALUES(3, '축구의 이해', '대한미디어', 22000);
-INSERT INTO Book VALUES(4, '골프 바이블', '대한미디어', 35000);
-INSERT INTO Book VALUES(5, '피겨 교본', '굿스포츠', 8000);
-INSERT INTO Book VALUES(6, '역도 단계별기술', '굿스포츠', 6000);
-INSERT INTO Book VALUES(7, '야구의 추억', '이상미디어', 20000);
-INSERT INTO Book VALUES(8, '야구를 부탁해', '이상미디어', 13000);
-INSERT INTO Book VALUES(9, '올림픽 이야기', '삼성당', 7500);
-INSERT INTO Book VALUES(10, 'Olympic Champions', 'Pearson', 13000);
+INSERT INTO Book VALUES(4, '골프 ', '대한미디어', 37000);
+INSERT INTO Book VALUES(5, '피겨 ', '굿스포츠', 8000);
+INSERT INTO Book VALUES(6, '역도 ', '굿스포츠', 6000);
+INSERT INTO Book VALUES(7, '야구', '한빛', 20000);
+INSERT INTO Book VALUES(8, '야구2', '한빛', 13000);
+INSERT INTO Book VALUES(9, '올림픽 이야기', '한빛', 7500);
+INSERT INTO Book VALUES(10, 'Olympic Champions', '한빛', 13000);
 
-INSERT INTO Customer VALUES (1, '박지성', '영국 맨체스타', '000-5000-0001');
-INSERT INTO Customer VALUES (2, '김연아', '대한민국 서울', '000-6000-0001');  
-INSERT INTO Customer VALUES (3, '장미란', '대한민국 강원도', '000-7000-0001');
-INSERT INTO Customer VALUES (4, '추신수', '미국 클리블랜드', '000-8000-0001');
-INSERT INTO Customer VALUES (5, '박세리', '대한민국 대전',  NULL);
+INSERT INTO Customer VALUES (1, '박지성', '영국', '000-5110-0001');
+INSERT INTO Customer VALUES (2, '이순신', '대한민국 서울', '000-6110-0001');  
+INSERT INTO Customer VALUES (3, '홍길동', '대한민국 강원도', '000-7110-0001');
+INSERT INTO Customer VALUES (4, '아리', '미국', '000-8110-0001');
+INSERT INTO Customer VALUES (5, '고길동', '대한민국 대전',  NULL);
 
 -- 주문(Orders) 테이블의 책값은 할인 판매를 가정함
-INSERT INTO Orders VALUES (1, 1, 1, 6000, TO_DATE('2014-07-01','yyyy-mm-dd')); 
-INSERT INTO Orders VALUES (2, 1, 3, 21000, TO_DATE('2014-07-03','yyyy-mm-dd'));
-INSERT INTO Orders VALUES (3, 2, 5, 8000, TO_DATE('2014-07-03','yyyy-mm-dd')); 
-INSERT INTO Orders VALUES (4, 3, 6, 6000, TO_DATE('2014-07-04','yyyy-mm-dd')); 
-INSERT INTO Orders VALUES (5, 4, 7, 20000, TO_DATE('2014-07-05','yyyy-mm-dd'));
-INSERT INTO Orders VALUES (6, 1, 2, 12000, TO_DATE('2014-07-07','yyyy-mm-dd'));
-INSERT INTO Orders VALUES (7, 4, 8, 13000, TO_DATE( '2014-07-07','yyyy-mm-dd'));
-INSERT INTO Orders VALUES (8, 3, 10, 12000, TO_DATE('2014-07-08','yyyy-mm-dd')); 
-INSERT INTO Orders VALUES (9, 2, 10, 7000, TO_DATE('2014-07-09','yyyy-mm-dd')); 
-INSERT INTO Orders VALUES (10, 3, 8, 13000, TO_DATE('2014-07-10','yyyy-mm-dd'));
+INSERT INTO Orders VALUES (1, 1, 1, 6000, TO_DATE('2019-07-01','yyyy-mm-dd')); 
+INSERT INTO Orders VALUES (2, 1, 3, 21000, TO_DATE('2019-07-03','yyyy-mm-dd'));
+INSERT INTO Orders VALUES (3, 2, 5, 8000, TO_DATE('2019-07-03','yyyy-mm-dd')); 
+INSERT INTO Orders VALUES (4, 3, 6, 6000, TO_DATE('2019-07-04','yyyy-mm-dd')); 
+INSERT INTO Orders VALUES (5, 4, 7, 20000, TO_DATE('2019-07-05','yyyy-mm-dd'));
+INSERT INTO Orders VALUES (6, 1, 2, 12000, TO_DATE('2019-07-07','yyyy-mm-dd'));
+INSERT INTO Orders VALUES (7, 4, 8, 13000, TO_DATE( '2019-07-07','yyyy-mm-dd'));
+INSERT INTO Orders VALUES (8, 3, 10, 12000, TO_DATE('2020-07-08','yyyy-mm-dd')); 
+INSERT INTO Orders VALUES (9, 2, 10, 7000, TO_DATE('2020-07-09','yyyy-mm-dd')); 
+INSERT INTO Orders VALUES (10, 3, 8, 13000, TO_DATE('2020-07-10','yyyy-mm-dd'));
 
 -- 여기는 3장에서 사용되는 Imported_book 테이블
 

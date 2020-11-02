@@ -2,12 +2,7 @@
 
 --------------  bookList4.jsp °Ë»ö Æû -----
 
-<%@page import="vo.BookVO"%>
-<%@page import="java.util.List"%>
-<%@page import="dao.BookDAO_JDBC"%>
-<%@page import="dao.BookDAO"%>
-<%@page import="service.BookServiceImpl"%>
-<%@page import="service.BookService"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
     
@@ -102,7 +97,7 @@ public class SearchBookServlet extends HttpServlet {
         String condition = request.getParameter("condition");
         String keyword = request.getParameter("keyword");
 		
-		BookDAO dao = new BookDAO_JDBC();
+		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
 		List<BookVO> list = service.searchBook(condition, keyword);
 		

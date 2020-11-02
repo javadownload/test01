@@ -1,9 +1,3 @@
-<%@page import="vo.BookVO"%>
-<%@page import="java.util.List"%>
-<%@page import="dao.BookDAO_JDBC"%>
-<%@page import="dao.BookDAO"%>
-<%@page import="service.BookServiceImpl"%>
-<%@page import="service.BookService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
     

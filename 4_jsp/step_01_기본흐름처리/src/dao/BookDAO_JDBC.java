@@ -36,7 +36,7 @@ public class BookDAO_JDBC implements BookDAO{
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}
 		return list;
 	}
@@ -63,7 +63,7 @@ public class BookDAO_JDBC implements BookDAO{
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}
 	}
 
@@ -85,7 +85,7 @@ public class BookDAO_JDBC implements BookDAO{
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}		
 	}
 
@@ -106,7 +106,7 @@ public class BookDAO_JDBC implements BookDAO{
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}
 		
 		
@@ -116,8 +116,15 @@ public class BookDAO_JDBC implements BookDAO{
 	public List<BookVO> searchBook(String condition, String keyword) {
 		List<BookVO> list = new ArrayList<BookVO>();
 
-        String sql = "";
-		
+        String sql = "select * from Book where "+condition+" like '%'||?||'%' " +"order by bookno desc";
+        
+//        String sql =
+//        	 	"select * from ( "+
+//        	 	"select rownum row#,bookid, bookname, publisher, price , img "+
+//        	 	"from (select * from Book where "+condition+" like '%'||?||'%' " +"order by bookid desc) "+ 
+//        	 	 ") where row# between ? and ? ";
+//        	 					    		
+        	 			
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -125,14 +132,30 @@ public class BookDAO_JDBC implements BookDAO{
 		try {
 			con = JDBCUtil.getConnection();
 			ps = con.prepareStatement(sql);
+			ps.setString(1, keyword);
 			
+			rs = ps.executeQuery();
+            while (rs.next()) {
+				BookVO vo = new BookVO();
+				vo.setBookno(rs.getInt("bookno"));
+				vo.setTitle(rs.getString("title"));
+				vo.setPublisher(rs.getString("publisher"));
+				vo.setPrice(rs.getInt("price"));
+				list.add(vo);
+			}
 			
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}
 		
+		return list;
+	}
+
+	@Override
+	public BookVO getBook(int no) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

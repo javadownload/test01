@@ -36,7 +36,7 @@ public class BookDAO_JDBC implements BookDAO{
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}
 		return list;
 	}
@@ -63,7 +63,7 @@ public class BookDAO_JDBC implements BookDAO{
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}
 	}
 
@@ -85,14 +85,14 @@ public class BookDAO_JDBC implements BookDAO{
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}		
 	}
 
 	@Override
 	public void updateBook(BookVO vo) {
 		// TODO Auto-generated method stub
-		String sql  = "UPDATE Book SET price = ?  WHERE bookid = ?";
+        String sql = "";
 		
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -101,16 +101,12 @@ public class BookDAO_JDBC implements BookDAO{
 		try {
 			con = JDBCUtil.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, vo.getPrice());
-			ps.setInt(2, vo.getBookno());
 			
-            int i = ps.executeUpdate();
-			if(i == 0) throw new Exception("수정 오류 발생 ");
-
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}
 		
 		
@@ -151,9 +147,15 @@ public class BookDAO_JDBC implements BookDAO{
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
-			JDBCUtil.close(rs, ps, con);
+			JDBCUtil.close(con , ps , rs);
 		}
 		
 		return list;
+	}
+
+	@Override
+	public BookVO getBook(int no) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

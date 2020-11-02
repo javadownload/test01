@@ -2,7 +2,7 @@
 
 <%@page import="vo.BookVO"%>
 <%@page import="java.util.List"%>
-<%@page import="dao.BookDAO_JDBC"%>
+<%@page import="dao.BookDAO_Mariadb"%>
 <%@page import="dao.BookDAO"%>
 <%@page import="service.BookServiceImpl"%>
 <%@page import="service.BookService"%>
@@ -23,7 +23,7 @@
 <tr><th>bookno</th> <th>title</th><th>publisher</th><th>price</th></tr>
 
 <%
-  // BookDAO dao = new BookDAO_JDBC();
+  //BookDAO dao = new BookDAO_Mariadb();
   // BookService service = new BookServiceImpl(dao);
    
   // List<BookVO> list = service.bookList();
@@ -71,7 +71,7 @@ public class ListBookServlet extends HttpServlet {
 			return;
 		}
         
-		BookDAO dao = new BookDAO_JDBC();
+		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
 		List<BookVO> list = service.bookList();
 		
@@ -94,12 +94,7 @@ public class ListBookServlet extends HttpServlet {
 
 
 --------------------bookList2.jsp----------------------------------------
-<%@page import="vo.BookVO"%>
-<%@page import="java.util.List"%>
-<%@page import="dao.BookDAO_JDBC"%>
-<%@page import="dao.BookDAO"%>
-<%@page import="service.BookServiceImpl"%>
-<%@page import="service.BookService"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
     
@@ -171,7 +166,7 @@ public class InsertBookServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
-		BookDAO dao = new BookDAO_JDBC();
+		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
 		BookVO vo =  new BookVO();
 		vo.setPublisher(request.getParameter("publisher"));
@@ -196,12 +191,7 @@ public class InsertBookServlet extends HttpServlet {
 
 --------------------------bookList3.jsp---- 삭제기능 연결  ------------------
 
-<%@page import="vo.BookVO"%>
-<%@page import="java.util.List"%>
-<%@page import="dao.BookDAO_JDBC"%>
-<%@page import="dao.BookDAO"%>
-<%@page import="service.BookServiceImpl"%>
-<%@page import="service.BookService"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
     
@@ -263,7 +253,7 @@ public class DeleteBookServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
-		BookDAO dao = new BookDAO_JDBC();
+		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
 		String[] nums =  request.getParameterValues("bookno");
 		try {

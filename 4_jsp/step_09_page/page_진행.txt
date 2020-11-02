@@ -1,0 +1,170 @@
+
+page 처리 list.do  추가해서 실습
+
+
+index.jsp   추가  ==>   <li> <a href="list.do"> Book List page</a></li><br>
+
+
+BookService에 count(); 추가후 서비스레이어 구축 
+public interface BookService {
+	
+	 List<BookVO> bookList();
+	 void bookAdd(BookVO vo) throws Exception;
+	 void deleteBook(int bookno);
+	 void updateBook(BookVO vo);
+	 public int count();
+
+	 List<BookVO> searchBook(String condition,String keyword);
+}
+
+--------------------------BookDAO_JDBC -----------------------------
+public int count() {
+		String sql = "select count(*) from book ";
+	Connection con = null;
+	PreparedStatement ps =null;
+	ResultSet rs = null;
+        int count = 0;
+	try {
+	    con = JDBCUtil.getConnection();
+	    ps = con.prepareStatement(sql);
+	    rs = ps.executeQuery();
+	    while(rs.next()) {
+	       count = rs.getInt(1);
+            }
+	} catch (Exception e) {
+                e.printStackTrace();
+	} finally {
+		JDBCUtil.close(rs, ps,con);
+	}
+	return count;
+}
+
+
+-----------------DispatcherServlet 에  추가  -----------------------------------------------
+
+if(action.equals("/list.do")) {
+       	 HttpSession session = request.getSession();
+            String login = (String) session.getAttribute("login");
+            if(login ==  null) {
+            	request.setAttribute("msg", "로그인이 필요한 서비스입니다.");
+            	request.getRequestDispatcher("login.jsp").forward(request, response);
+            	return;
+            }
+    		
+    		BookDAO dao = new BookDAO_JDBC();
+    		BookService service = new BookServiceImpl(dao);
+    		List<BookVO> list = service.bookList();
+    		
+    		request.setAttribute("bookList", list);
+    		String view ="/bookListPage.jsp";
+    		
+    		int count = service.count();
+    		System.out.println("count : "+count);
+    	    //int end = (int) Math.ceil(count / 5);
+    		int end = count / 5+1;
+    		System.out.println("end : "+end);
+    		//int start = (end - 5) +1;
+    	    int start = 1;
+    		int page = 1;
+    		if(request.getParameter("current")!= null) {
+    			 page = Integer.parseInt(request.getParameter("page")); 
+    		}
+    		
+    		
+    		
+    		request.setAttribute("list", list);
+    		request.setAttribute("start", start);
+    		request.setAttribute("end", end);
+    		request.setAttribute("page", page);
+    		
+    		getServletContext().getRequestDispatcher(view).forward(request, response);
+       	//return;
+       }
+
+
+--------------------bookListPage.jsp-------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Book App</title>
+
+<link rel="stylesheet" href="./css/button.css">
+<link rel="stylesheet" href="./css/table.css">
+<link rel="stylesheet" href="./css/main.css">
+    
+    
+    
+</head>
+<body>
+<%@ include file="common/header.jsp" %>
+
+<div id="output">
+<section>
+
+<table class="tableb">
+<tr>
+<th>북번호</th><th>Title</th><th>Author</th><th>Price</th>
+</tr>
+
+<c:forEach var="book" begin="${(page-1)*5}" 
+           end="${(page-1)*5+4 }" items="${list}">
+
+<tr>
+<td>${book.bookno}</td><td>${book.title}</td>
+<td>${book.publisher}</td><td>${book.price}</td>
+</tr>
+</c:forEach>
+
+</table>
+
+<c:forEach var="i" begin="${start}" end="${end}">
+    <a href="list.do?page=${i}">|${i}|</a>
+</c:forEach>
+
+
+
+</section>
+</div>
+<%@ include file="common/footer.jsp" %>
+
+
+</body>
+</html>
+-------------------------------------------
+[페이징 처리]
+
+ # endPage와 startPage 구하기
+ 
+   - endPage 구하기:
+   
+     endPage = (Math.ceil(현재페이지번호 / 페이지 목록에 나타낼 페이지 번호의 수)* 페이지 목록에 나타낼 페이지 번호의 수)
+     
+   - startPage 구하기 :  
+     
+     startPage = (endPage - 페이지 목록에 나타낼 페이지 번호의 수) +1
+     
+ 
+ # totalData와 endPage의 재계산
+ 	
+ 	finalEndPage = Math.ceil(totalData / 페이지에 보여줄 글의 갯수)
+ 	
+ 	if(endPage > finalEndPage){
+ 		endPage = finalEndPage
+ 	}
+  
+ # Prev(이전)과 next(다음) 계산
+ 
+   prev = start == 1 ? false : true;
+ 
+   next = endPage * 페이지에 보여줄 글의 갯수 > totalData ? false : true
+ 
+ 
+ 
+       

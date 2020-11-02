@@ -42,5 +42,10 @@ public class BookServiceImpl implements BookService{
 		// TODO Auto-generated method stub
 		return dao.searchBook(condition, keyword);
 	}
+	@Override
+	public BookVO getBook(int no) {
+		// TODO Auto-generated method stub
+		return dao.getBook(no);
+	}
 
 }

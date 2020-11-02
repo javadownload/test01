@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.BookDAO;
 import dao.BookDAO_JDBC;
+import dao.BookDAO_Mariadb;
 import service.BookService;
 import service.BookServiceImpl;
 import vo.BookVO;
@@ -40,7 +41,7 @@ public class ListBookServlet extends HttpServlet {
 //			return;
 //		}
         
-		BookDAO dao = new BookDAO_JDBC();
+		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
 		List<BookVO> list = service.bookList();
 		

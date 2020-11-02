@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.BookDAO;
 import dao.BookDAO_JDBC;
+import dao.BookDAO_Mariadb;
 import service.BookService;
 import service.BookServiceImpl;
 import vo.BookVO;
@@ -25,7 +26,7 @@ public class DeleteBookServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
-		BookDAO dao = new BookDAO_JDBC();
+		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
 		String[] nums =  request.getParameterValues("bookno");
 		try {

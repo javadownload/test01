@@ -1,0 +1,228 @@
+login.do 서블릿 생성
+
+
+<form action="login.do" method="post">
+   <table border="1">
+      <tr>
+         <td><label for="id">ID</label></td>
+         <td>
+             <input type="text" id="id" name="id" value="" 
+                  required="required" placeholder="아이디입력" 
+                  pattern="\w{6,12}" title="영문자숫자로 6~12 글자사이입력 "/> 
+         </td>      
+      </tr>
+      <tr>
+         <td><label for="pw">PW</label></td>
+         <td><input type="password" id="pw" name="pw" value="" required="required"/> </td>
+      </tr>
+       <tr>
+         <td colspan="2">
+             <input type="submit" value="로그인">
+             <input type="reset" value="취소">
+             <a href="users.html">회원가입</a>
+         </td>
+      </tr>
+   </table>
+</form>
+
+</section>
+</div>
+
+
+------------------LoginServlet------------------------------------------------
+package servlet;
+
+@WebServlet({"/login.do","/logout.do"})
+public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			                              throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if(session != null) {
+			session.invalidate();
+		}
+		response.sendRedirect("./index.jsp");
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			                                throws ServletException, IOException {
+		response.setContentType("text/html;charset=utf-8");
+        request.setCharacterEncoding("utf-8"); 
+		
+        String id = request.getParameter("id");
+        String pw = request.getParameter("pw");
+        
+        System.out.println("/login.do ");
+        System.out.println(id+"/"+pw);
+        
+        if(id==null||pw==null||id.length()==0||pw.length()==0) {
+        	//response.sendRedirect("./login.jsp");
+        	request.setAttribute("msg", "pw 정보를  입력하세요");
+        	request.setAttribute("id", id);
+        	request.getRequestDispatcher("login.jsp").forward(request, response);
+        	return;
+        }
+        if(id.equals("java01") && pw.equals("1234")) {
+        	HttpSession session = request.getSession();
+        	session.setAttribute("login", id+"/홍자바");
+        	
+        	request.getRequestDispatcher("index.jsp").forward(request, response);
+        	
+        }else {
+        	request.setAttribute("msg", "로그인 실패 ");
+        	request.setAttribute("id", id);
+        	
+        	request.getRequestDispatcher("login.jsp").forward(request, response);
+		}
+	}
+}
+
+
+login.do   logout.do  만든후  메뉴 흐름처리 
+
+
+-------------------login.jsp  메뉴처리------------------------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Book App</title>
+
+<link rel="stylesheet" href="./css/button.css">
+<link rel="stylesheet" href="./css/table.css">
+<link rel="stylesheet" href="./css/main.css">
+    
+    
+    
+</head>
+<body>
+<%@ include file="common/header.jsp" %>
+
+<div id="output">
+<section>
+<div>
+<h3> link List</h3>
+
+
+<ul>
+<c:if test="${empty login}">
+   <li> <a href="login.jsp"> LogIn </a></li><br>
+</c:if>
+
+<c:if test="${!empty login }">
+   <li> <a href="logout.do"> LogOut </a></li><br>
+   <li> <a href="bookList.do"> Book List </a></li><br>
+   <li> <a href="book.jsp"> Book 등록t </a></li><br>
+</c:if>
+
+</ul>
+
+</div>
+</section>
+</div>
+<%@ include file="common/footer.jsp" %>
+</body>
+</html>
+
+
+
+------------------- header.jsp   메뉴 처리 -------------------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+	    <header>
+	       <hgroup>
+	           <h1>Page Title</h1>
+	           <h2>Page Title</h2>
+	       </hgroup>
+	    </header>
+	    
+	
+	<nav>
+	    <ul>
+	       <li> <a href="index.jsp"> Home </a> </li>
+	      
+	       <li class="dropbox"> <a href="#"> 메 뉴 </a> 
+	           <span class="dropmenu">
+		           <span> <a href="img1.html" class="btn"> 이미지보기 </a> </span>
+			       <span> <a href="table1.html" class="btn"> 데이터보기 </a> </span>
+			       <span> <a href="chart1.jsp" class="btn"> chart 1 </a> </span>
+			       <span> <a href="#" class="btn"> link 2  </a> </span>
+			       <span> <a href="#" class="btn"> link 3 </a> </span>
+	           </span>
+	       </li>
+	       
+	       <li> <a href="#"> About </a> </li>
+	       <li> <a href="#"> Contact </a> </li>
+	       
+	       <c:if test="${empty login}">
+			   <li> <a href="login.jsp"> LogIn </a></li><br>
+		   </c:if>
+			
+			<c:if test="${!empty login }">
+			   <li> <a href="logout.do"> LogOut </a></li><br>
+			</c:if>
+
+
+	    </ul>
+	</nav>
+	
+
+******************서블릿 앞단에 로그인 여부 처리 추가***********************88
+
+HttpSession session = request.getSession();
+String login = (String) session.getAttribute("login");
+System.out.println("login : "+login);
+if(login == null) {
+	//response.sendRedirect("login.jsp");
+         request.setAttribute("msg", "login이 필요합니다.");
+
+	getServletContext().
+	getRequestDispatcher("/login.jsp").
+	forward(request, response);
+	return;
+}
+
+************************************************************
+로그아웃후 http://localhost:9000/~~/bookList.do  요청해본다.
+
+HttpSession session = request.getSession();
+String login = (String) session.getAttribute("login");
+System.out.println("login : "+login);
+if(login == null) {
+	//response.sendRedirect("login.jsp");
+         request.setAttribute("msg", "login이 필요합니다.");
+
+	getServletContext().
+	getRequestDispatcher("/login.jsp").
+	forward(request, response);
+	return;
+}
+
+앞에 추가후
+로그아웃후 http://localhost:9000/~~/bookList.do  요청하면 login 페이지로 포워딩된다.
+
+http://localhost:9000/~~~/search.do  도 로그인 검증 로직 추가 한다.
+
+
+-------------------------예외처리------------------------------------------
+
+catch (Exception e) {
+	//out.print("<h2> 문제 발생 : "+e);
+	request.setAttribute("exception", e);
+
+	getServletContext().
+	getRequestDispatcher("/error.jsp").
+	forward(request, response);
+}
+
+------------------------------------

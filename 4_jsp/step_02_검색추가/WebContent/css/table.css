@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-  h1,h2,h3,h4 {
+ h1,h2,h3,h4 {
      text-align: center;
      font-family: cursive;
   } 
@@ -30,4 +30,6 @@
 	background-color: silver;
   }
   
+	
+}
   

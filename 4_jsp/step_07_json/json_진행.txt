@@ -1,0 +1,143 @@
+
+
+
+ if(action.equals("/bookListajax.do")) {
+	BookDAO dao = new BookDAO_JDBC();
+	BookService service = new BookServiceImpl(dao);
+	List<BookVO> list = service.bookList();
+	
+	JSONArray array = new JSONArray();
+	Map<String, String> map  = new HashMap<String, String>();
+	list.forEach(i->{
+		map.put("bookno", String.valueOf(i.getBookno()));
+		map.put("price", String.valueOf(i.getPrice()));
+		map.put("publisher", i.getPublisher());
+		map.put("title", i.getTitle());
+		JSONObject obj = new JSONObject(map);
+		array.add(obj);
+	});
+	out.print(JSONArray.toJSONString(array));
+}
+
+----------------------------header.jsp   메뉴추가---------------------
+
+<nav>
+	    <ul>
+	       <li> <a href="index.jsp"> Home </a> </li>
+	      
+	       <li class="dropbox"> <a href="#"> 메 뉴 </a> 
+	           <span class="dropmenu">
+		           <span> <a href="img1.html" class="btn"> 이미지보기 </a> </span>
+			       <span> <a href="table1.html" class="btn"> 데이터보기 </a> </span>
+			       <span> <a href="chart1.jsp" class="btn"> chart 1 </a> </span>
+			       <span> <a href="#" onclick="f1()"> BookList(ajax) </a></span>
+			       
+			       <span> <a href="#" class="btn"> link 2  </a> </span>
+			       <span> <a href="#" class="btn"> link 3 </a> </span>
+	           </span>
+	       </li>
+	       
+	       <li> <a href="#"> About </a> </li>
+	       <li> <a href="#"> Contact </a> </li>
+	       
+	       <c:if test="${empty login}">
+			   <li> <a href="login.jsp"> LogIn </a></li><br>
+		   </c:if>
+			
+			<c:if test="${!empty login }">
+			   <li> <a href="logout.do"> LogOut </a></li><br>
+			</c:if>
+
+
+	    </ul>
+	</nav>
+
+
+--------------------index.jsp --ajax통신으로 booklist 출력 ------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Book App</title>
+
+<link rel="stylesheet" href="./css/button.css">
+<link rel="stylesheet" href="./css/table.css">
+<link rel="stylesheet" href="./css/main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+
+<script type="text/javascript">
+
+function f1() {
+	alert("ajax 통신 ")
+	$.ajax({ 
+		 url:'bookListajax.do',
+		 dataType:'json',
+		 success:function(data){
+			 display(data);
+		 },
+		 error:function(error){
+			 alert("error "+error.name);
+			 alert("error "+error.name+","+error.statusText);
+		 }
+	 });  
+}
+
+function display(data){
+	//console.log(typeof(data))
+	//$(data).each((i,item)=>{log(item);});
+	
+	 let tag = "<table class='tablea'>";
+	 tag += "<tr><th>bookno</th> <th>title</th><th>publisher</th></tr> ";
+	 
+	 $(data).each((i,item)=>{
+		 tag += "<tr><td>"
+	     tag += item.bookno+"</td><td>"+item.title+"</td><td>"+item.publisher
+	     tag += "</tr></td>"
+	 });
+	 
+	 tag += "</table>";
+	 
+	 $('section').html(tag);
+}
+
+</script>    
+    
+</head>
+<body>
+<%@ include file="common/header.jsp" %>
+
+<div id="output">
+<section>
+<div>
+<h3> link List</h3>
+
+
+<ul>
+<c:if test="${empty login}">
+   <li> <a href="login.jsp"> LogIn </a></li><br>
+</c:if>
+
+<c:if test="${!empty login }">
+   <li> <a href="logout.do"> LogOut </a></li><br>
+   <li> <a href="bookList.do"> Book List </a></li><br>
+   <li> <a href="book.jsp"> Book 등록t </a></li><br>
+</c:if>
+
+</ul>
+
+</div>
+</section>
+</div>
+<%@ include file="common/footer.jsp" %>
+
+
+</body>
+</html>
+
