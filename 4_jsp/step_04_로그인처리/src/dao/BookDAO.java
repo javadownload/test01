@@ -6,7 +6,7 @@ import vo.BookVO;
 
 public interface BookDAO {
 	 List<BookVO> bookList();
-	 void bookAdd(BookVO vo);
+	 void bookAdd(BookVO vo) throws Exception;
 	 void deleteBook(int bookno);
 	 void updateBook(BookVO vo);
 	 BookVO getBook(int no) ;

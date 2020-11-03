@@ -10,10 +10,9 @@
 <meta charset="UTF-8">
 <title>Book App</title>
 
-<link rel="stylesheet" href="./css/button.css">
-<link rel="stylesheet" href="./css/table.css">
+<link rel="stylesheet" href="./css/my.css">
 <link rel="stylesheet" href="./css/main.css">
-    
+  
     <script type="text/javascript">
    function f1() {
 	   return confirm("삭제 할거니?");

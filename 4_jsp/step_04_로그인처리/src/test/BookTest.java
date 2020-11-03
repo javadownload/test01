@@ -30,7 +30,7 @@ class BookTest {
 	}
 
 //	@Test
-	void add() {
+	void add() throws Exception{
 		BookVO vo = new BookVO();
 		vo.setTitle("spring");
 		vo.setPrice(2900);

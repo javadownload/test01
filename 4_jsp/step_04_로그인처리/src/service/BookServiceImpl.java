@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService{
 		return dao.bookList();
 	}
 	@Override
-	public void bookAdd(BookVO vo) {
+	public void bookAdd(BookVO vo) throws Exception {
 		dao.bookAdd(vo);
 	}
 	@Override

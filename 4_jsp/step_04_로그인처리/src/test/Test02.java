@@ -2,20 +2,21 @@ package test;
 
 import dao.BookDAO;
 import dao.BookDAO_JDBC;
+import dao.BookDAO_Mariadb;
 import service.BookService;
 import service.BookServiceImpl;
 import vo.BookVO;
 
 public class Test02 {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
-		BookDAO dao = new BookDAO_JDBC();
+		BookDAO dao = new BookDAO_Mariadb();
 		BookService service = new BookServiceImpl(dao);
 		
 		BookVO vo = new BookVO();
-		vo.setTitle("연습중1");
+		vo.setTitle("");
 		vo.setPrice(900);
-		vo.setPublisher("명지대");
+		vo.setPublisher("");
 		
 		service.bookAdd(vo);
 		

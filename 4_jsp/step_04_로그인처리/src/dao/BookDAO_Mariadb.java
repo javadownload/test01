@@ -43,7 +43,7 @@ public class BookDAO_Mariadb implements BookDAO{
 	}
 
 	@Override
-	public void bookAdd(BookVO vo) {
+	public void bookAdd(BookVO vo) throws Exception{
         String sql = "insert into book (title,publisher,price) " + 
         		"values (?,?,?)";
 		
@@ -62,7 +62,8 @@ public class BookDAO_Mariadb implements BookDAO{
 			int i = ps.executeUpdate();
 			if(i == 0) throw new Exception("등록 실패");
 		} catch (Exception e) {
-			System.out.println(e);
+			//System.out.println(e);
+			throw e;
 		}finally {
 			JDBCUtil.close(con , ps , rs);
 		}
