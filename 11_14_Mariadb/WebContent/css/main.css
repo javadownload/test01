@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Rowdies:wght@700&display=swap');
+
+ @media screen and (max-width:900px) {
+       body {
+	      background-color: #ffffcc;
+       }
+   }
+
+   @media screen and (max-width:600px) {
+       body {
+	      background-color: #ff0000;
+       }
+       
+   }
+   
+   h1,h2,h3,h4,h5,h6 {
+      font-family: 'Rowdies', cursive;
+   }
+   
+   ul {
+      list-style: none;
+   }
+   a {
+        text-decoration: none;
+    }
+   a:hover {
+	    text-decoration: underline;
+   } 
+   section {
+      width: 100%;
+      min-height: 600px;
+      float: right;
+   }
+   #l{
+      width: 30%;
+      float: left;
+   }
+   footer {
+      clear: both;
+      width: 100%;
+      text-align: center;
+      height: 40px;
+      background-color: gray;
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 0 auto;
+     
+   }
+   
+   header {
+       width: 100%;
+       height: 4em;
+   }
+   
+   header > hgroup > h1{
+      text-align: center;
+   }
+   header  hgroup  h2 {
+       position:fixed;
+       right: 0px;
+       top: -20px;
+   }
+   
