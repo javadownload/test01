@@ -114,3 +114,143 @@ public class UploadServlet2 extends HttpServlet {
 
 }
 
+***************** book img *********************
+drop table book;
+CREATE TABLE Book (
+  bookno      int(4) PRIMARY KEY auto_increment,
+  title       VARCHAR(40),
+  publisher   VARCHAR(40),
+  price       int(8) 
+);
+
+insert into book (title,publisher,price) values ('java programming','한빛',900);
+
+
+----------------------
+
+public class BookVO {
+	private int bookno; // int(4) PRIMARY KEY auto_increment,
+	private String title; // VARCHAR(40),
+	private String publisher; // VARCHAR(40),
+	private int price; // int(8)
+	private String img; // VARCHAR(40),
+
+----------------------------
+public class BookDAO_Mariadb {
+
+   // 등록
+   public void bookAdd(BookVO vo) {
+		System.out.println("add  "+vo);
+		String sql =
+		"insert into book (title,publisher,price,img) values (?,?,?,?)";
+			ps.setString(1, vo.getTitle());
+			ps.setString(2, vo.getPublisher());
+			ps.setInt(3, vo.getPrice());
+			ps.setString(4, vo.getImg());
+			
+			row = ps.executeUpdate();
+	
+	//상세보기
+			
+public BookVO getBook(int bookno) {
+		String sql ="select * fro"
+				+ "m book where bookno = ? ";
+	
+	while(rs.next()) {
+				vo = new BookVO();
+				vo.setBookno(rs.getInt("bookno"));
+				vo.setPrice(rs.getInt("price"));
+				vo.setTitle(rs.getString("title"));
+				vo.setPublisher(rs.getString("publisher"));
+				vo.setImg(rs.getString("img"));
+			}
+
+
+---------------------------
+
+@WebServlet("*.do")
+@MultipartConfig(maxFileSize = 1024*1024*5)
+public class DispatcherServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+
+
+if (action.equals("/addBook2.do")) {
+	        String path = request.getSession().getServletContext().getRealPath("/upload/");
+
+			BookDAO_Mariadb dao = new BookDAO_Mariadb();
+			BookService service = new BookServiceImpl(dao);
+
+			String title = request.getParameter("title");
+			String publisher = request.getParameter("publisher");
+			int price = Integer.parseInt(request.getParameter("price"));
+			
+			BookVO vo = new BookVO();
+			vo.setPrice(price);
+			vo.setTitle(title);
+			vo.setPublisher(publisher);
+			
+			
+			Collection<Part> parts = request.getParts();
+	        for(Part p :parts) {
+	        	if(p.getContentType() != null) {
+	        		String filename = p.getSubmittedFileName();
+	        		vo.setImg(filename);
+	        		if(filename != null && filename.length()!=0 ) {
+	        			p.write(path+filename);
+	        		}
+	        	}
+	        }
+	        
+			
+			service.bookAdd(vo);
+			
+			response.sendRedirect("bookList.do");
+			return;
+		}
+
+----------------------
+<section>
+<h2> Book 등록</h2>
+
+<form action="addBook2.do" method="post" enctype="multipart/form-data">
+    제목: <input type="text"  name="title"> <br/>
+    출판사: <input type="text"  name="publisher"> <br/>
+    가격: <input type="number"  name="price"> <br/>
+    
+  <label>첨부파일 : <input type="file" name="img" > </label> <br>
+    
+  <input type="submit" value="등록"> 
+  <input type="reset">
+</form>
+</section>
+
+--------------------------------
+<!-- view Form  -->
+	  <form name="f" method="post" action="">
+	  <input type="hidden" name="bookno" value="${book.bookno}">
+	  <table>
+		  <tr>
+			<td >도서제목</td>
+			<td > ${book.title}	</td>
+		  </tr>
+		  <tr>
+			<td >출판사</td>
+			<td >${book.publisher}</td>
+		  </tr>
+		  <tr>
+			<td >가격</td>
+			<td >${book.price}</td>
+		  </tr>		
+		  <tr>
+			<td >이미지</td>
+			<td ><img alt="" src="./upload/${book.img}" width="200" height="200"></td>
+		  </tr>		
+		  
+	  </table>
+	  </form>
+	  
+

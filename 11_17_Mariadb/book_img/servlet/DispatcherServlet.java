@@ -1,15 +1,18 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import dao.BookDAO_Mariadb;
 import dao.UserDAO_Mariadb;
@@ -21,6 +24,7 @@ import vo.BookVO;
 import vo.UserVO;
 
 @WebServlet("*.do")
+@MultipartConfig(maxFileSize = 1024*1024*5)
 public class DispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -30,12 +34,12 @@ public class DispatcherServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 
-		
-				
+		HttpSession session = request.getSession();
+
 		String uri = request.getRequestURI();
 		String action = uri.substring(uri.lastIndexOf('/'));
 		System.out.println(action);
-
+        System.out.println(getServletContext().getServletContextName());
 		if (action.equals("/login.do")) {
 			String id = request.getParameter("id");
 			String pw = request.getParameter("password");
@@ -49,7 +53,6 @@ public class DispatcherServlet extends HttpServlet {
 			UserVO login = service.login(vo);
 
 			if (login != null) {
-				HttpSession session = request.getSession();
 				session.setAttribute("login", login);
 				
 				RequestDispatcher rd = null;
@@ -67,7 +70,6 @@ public class DispatcherServlet extends HttpServlet {
 			return;
 		}
 		if (action.equals("/logout.do")) {
-			HttpSession session = request.getSession();
 			if (session != null) {
 				session.invalidate();
 			}
@@ -76,6 +78,17 @@ public class DispatcherServlet extends HttpServlet {
 			return;
 		}
 		if (action.equals("/bookList.do")) {
+			
+			if(session.getAttribute("login") == null) {
+				//response.sendRedirect("login.jsp");
+		        request.setAttribute("msg", "login이 필요합니다.");
+	
+				getServletContext().
+				getRequestDispatcher("/login.jsp").
+				forward(request, response);
+				return;
+			}
+			
 			BookDAO_Mariadb dao = new BookDAO_Mariadb();
 			BookService service = new BookServiceImpl(dao);
 			List<BookVO> list = service.bookList();
@@ -91,6 +104,8 @@ public class DispatcherServlet extends HttpServlet {
 			return;
 		}
 		if (action.equals("/bookSearch.do")) {
+			
+				
 			String condition = request.getParameter("condition");
 			String keyword =	request.getParameter("keyword")	;
 			
@@ -131,6 +146,39 @@ public class DispatcherServlet extends HttpServlet {
 			vo.setPrice(price);
 			vo.setTitle(title);
 			vo.setPublisher(publisher);
+			
+			service.bookAdd(vo);
+			
+			response.sendRedirect("bookList.do");
+			return;
+		}
+		if (action.equals("/addBook2.do")) {
+	        String path = request.getSession().getServletContext().getRealPath("/upload/");
+
+			BookDAO_Mariadb dao = new BookDAO_Mariadb();
+			BookService service = new BookServiceImpl(dao);
+
+			String title = request.getParameter("title");
+			String publisher = request.getParameter("publisher");
+			int price = Integer.parseInt(request.getParameter("price"));
+			
+			BookVO vo = new BookVO();
+			vo.setPrice(price);
+			vo.setTitle(title);
+			vo.setPublisher(publisher);
+			
+			
+			Collection<Part> parts = request.getParts();
+	        for(Part p :parts) {
+	        	if(p.getContentType() != null) {
+	        		String filename = p.getSubmittedFileName();
+	        		vo.setImg(filename);
+	        		if(filename != null && filename.length()!=0 ) {
+	        			p.write(path+filename);
+	        		}
+	        	}
+	        }
+	        
 			
 			service.bookAdd(vo);
 			
