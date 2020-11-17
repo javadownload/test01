@@ -231,6 +231,11 @@ public class ViewBookServlet extends HttpServlet {
 
 <form action="login.do" method="post">
    <table border="1">
+       <tr>
+          <td colspan="2">
+                <span style="color:red">${msg}</span>
+          </td>
+       </tr>
       <tr>
          <td><label for="id">ID</label></td>
          <td>
@@ -346,6 +351,14 @@ public class LoginServlet extends HttpServlet {
 	}
 
 }
+
+-----------------------------
+
+      <tr>
+          <td colspan="2">
+          <span style="color:red">${msg}</span>
+          </td>
+       </tr>
 
 
 ******************************************************
