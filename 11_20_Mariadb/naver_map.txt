@@ -1,5 +1,18 @@
+https://docs.ncloud.com/ko/naveropenapi_v3/application.html
+
+https://docs.ncloud.com/ko/naveropenapi_v3/maps/web-sdk/v3/start.html
+
+https://github.com/navermaps/maps.js.ncp
+
+https://navermaps.github.io/maps.js.ncp/docs/tutorial-2-Getting-Started.html
+
+https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
+
+
 
 ******************* 구글 지도************************
+https://developers.google.com/maps/documentation
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -155,7 +168,10 @@ function initmap(location) {
                 position: new naver.maps.LatLng(location.coords.latitude, location.coords.longitude),
                 map: map
             });
-            
+            naver.maps.Event.addListener(marker, 'click', function(e) {
+            	window.open('https://www.multicampus.com/main');
+           });
+            	
         }
     </script>
 </body>
