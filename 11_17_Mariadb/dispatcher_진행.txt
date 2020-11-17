@@ -1,4 +1,44 @@
 
+login.jsp
+<tr>
+          <td colspan="2">
+          <span style="color:red">${msg}</span>
+          </td>
+</tr>
+
+header.jsp
+   <li> <a href="${pageContext.request.contextPath}/logout.do"> LogOut${login.name} </a></li><br>
+
+
+if (action.equals("/bookList.do")) {
+			
+	if(session.getAttribute("login") == null) {
+		//response.sendRedirect("login.jsp");
+	request.setAttribute("msg", "login이 필요합니다.");
+
+		getServletContext().
+		getRequestDispatcher("/login.jsp").
+		forward(request, response);
+		return;
+	}
+	
+	BookDAO_Mariadb dao = new BookDAO_Mariadb();
+	BookService service = new BookServiceImpl(dao);
+	List<BookVO> list = service.bookList();
+
+	
+	request.setAttribute("bookList", list);
+	String page = "/bookList.jsp";
+	
+	getServletContext().
+	getRequestDispatcher(page).
+	forward(request, response);
+	
+	return;
+}
+
+
+프로젝트 복사후 진행 
 ********************************  DispatcherServlet  구현  ******************
 
 @WebServlet("*.do")
