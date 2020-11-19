@@ -5,36 +5,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>간단한 지도 표시하기</title>
+        <link rel="stylesheet" href="./css/style.css">
+    
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=key값"></script>
 </head>
 <body>
-    <div id="map" style="width:100%;height:400px;"></div>
+   <div id="navbar"> My Map</div>
+   <div id="infoBox"> 
+      <div id="infoTitle">현재날짜</div>
+      <div id="infoContent">2020년11월20일</div>
+   </div>
 
+    <div id="map" style="width:100%;height:100vh;"></div>
+
+<script type="text/javascript" src="./js/data.js"></script>
     <script type="text/javascript">
         navigator.geolocation.getCurrentPosition(initMap);
 
         var map = null;
 
         function initMap(location) {
-        	//console.log(location.coords.latitude);
-        	//console.log(location.coords.longitude);
         	
             map = new naver.maps.Map('map', {
-                center: new naver.maps.LatLng(location.coords.latitude, location.coords.longitude),
-                zoom: 15
+                center: new naver.maps.LatLng(37.3595704, 127.105399), //지도의 센터위치 네이버본사 
+                zoom: 10
             });
           
 
             var marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(location.coords.latitude, location.coords.longitude),
-                map: map
+                map: map,
+                position: new naver.maps.LatLng(location.coords.latitude, location.coords.longitude), //현재 내위치에 마커표시
+                icon:{
+                	content:"<div class='maker'></div>"
+                }
             });
-
-           	naver.maps.Event.addListener(marker, 'click', function(e) {
-            	window.open('https://www.multicampus.com/main');
-           	});
-            	
-            	
+            
         }
     </script>
 </body>

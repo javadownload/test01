@@ -1,13 +1,3 @@
-https://docs.ncloud.com/ko/naveropenapi_v3/application.html
-
-https://docs.ncloud.com/ko/naveropenapi_v3/maps/web-sdk/v3/start.html
-
-https://github.com/navermaps/maps.js.ncp
-
-https://navermaps.github.io/maps.js.ncp/docs/tutorial-2-Getting-Started.html
-
-https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
-
 
 
 ******************* 구글 지도************************
@@ -23,6 +13,7 @@ https://developers.google.com/maps/documentation
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
 </script>
 <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
 <style type="text/css">
   #map {
      width: 100%;
@@ -32,35 +23,39 @@ https://developers.google.com/maps/documentation
 
 </style>    
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
+
 <%@include file="common/header.jsp" %>
-<div id="output">
+
 <section>
 <h2> My Location </h2>
 <div id="map"></div>   
-
-
 </section>
-</div>
+
 <%@include file="common/footer.jsp" %>
+
 <script type="text/javascript">
 navigator.geolocation.getCurrentPosition(initmap);
+
 function initmap(location) {
 	var cen = { 
-			lat :location.coords.latitude,
-			lng :location.coords.longitude
+		lat :location.coords.latitude,
+		lng :location.coords.longitude
 	};
 	console.log(location.coords.latitude);
 	console.log(location.coords.longitude);
+
 	var map = new google.maps.Map(document.getElementById('map'),{
 		zoom:14,
 		center:cen
 	});
+
 	var marker = new google.maps.Marker({
 		position:cen,
 		map:map
@@ -110,12 +105,14 @@ function initmap(location) {
 </section>
 </div>
 <%@include file="common/footer.jsp" %>
+
 <script type="text/javascript">
 navigator.geolocation.getCurrentPosition(initmap);
+
 function initmap(location) {
 	var cen = { 
-			lat :location.coords.latitude,
-			lng :location.coords.longitude
+		lat :location.coords.latitude,
+		lng :location.coords.longitude
 	};
 	console.log(location.coords.latitude);
 	console.log(location.coords.longitude);
@@ -136,7 +133,23 @@ function initmap(location) {
 </body>
 </html>
 
+******************* ***********************
 ******************* 네이버 지도************************
+key값 : smd9nxkc7g
+
+https://docs.ncloud.com/ko/naveropenapi_v3/application.html
+
+https://docs.ncloud.com/ko/naveropenapi_v3/maps/web-sdk/v3/start.html
+
+https://github.com/navermaps/maps.js.ncp
+
+https://navermaps.github.io/maps.js.ncp/docs/tutorial-2-Getting-Started.html
+
+https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
