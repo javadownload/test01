@@ -1,5 +1,2 @@
-# web01
+# test
 
-## mariaDB
-## java
-## servlet&jsp
